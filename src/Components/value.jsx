@@ -10,7 +10,7 @@ export default function Value(props) {
           value={props.option}
           name={props.select}
           className="radioValues"
-          onChange={(e) => { props.set(props.select, e.target.value, props.score); }}
+          onChange={(e) => { props.storeObjectValue(props.select, e.target.value, props.score); }}
           required
           checked={props.obj[props.select] && props.obj[props.select].val == props.option}
         />

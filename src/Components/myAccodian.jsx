@@ -19,7 +19,7 @@ export default function MyAccodian(props) {
                   key={score}
                   {...id}
                   select={index + 2 * props.currentPage - 1}
-                  set={props.set}
+                  storeObjectValue={props.storeObjectValue}
                   obj={props.obj}
                 />;
               })

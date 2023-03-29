@@ -4,14 +4,14 @@ import MyAccodian from "./myAccodian";
 import "../Media/scss/main.css";
 import RiskGraph from "./graph";
 export default function Accodion() {
-  const [value, setValue] = useState(false);
+  const [openPopupForm, setOpenPopupForm] = useState(false);
   const [obj, setObj] = useState({});
-  const [validationMessages, setValidationMessages] = useState([]);
+  const [validationMessages, setValidationMessages] = useState();
   const [formData, setFormData] = useState({});
   const [riskMeter, setRiskMeter] = useState([]);
   const [currentPage, setCurrPage] = useState(1);
   const [risk, setRisk] = useState();
-  var nav = false;
+  var axiosCall = false;
   const recordPerPage = 2;
   const lastIndex = currentPage * recordPerPage;
   const firstIndex = lastIndex - recordPerPage;
@@ -31,37 +31,37 @@ export default function Accodion() {
   //Forntend Validation
   const validateForm = () => {
     const { name, contact, email } = formData;
-    setValidationMessages([]);
-    var messages = [];
+    setValidationMessages();
+    var messages;
     var regmobile = /^[0-9]+$/;
     switch (true) {
       case name.length < 3:
-        messages.push("Name is too short");
+        messages="Name is too short";
         break;
       case name.length > 30:
-        messages.push("Name is too large");
+        messages="Name is too large";
         break;
-      case contact.length !== 10 || !regmobile.test(contact):
-        messages.push("Give Valid Mobile Number");
+      case contact.length != 10 || !regmobile.test(contact):
+        messages="Give Valid Mobile Number";
         break;
-      case email.charAt(email.length - 4) !== "." && email.charAt(email.length - 4) !== ".":
-        messages.push(". is not at correct position");
+      case email.charAt(email.length - 4) != "." && email.charAt(email.length - 4) != ".":
+        messages=". is not at correct position";
         break;
       default:
-        nav = true;
+        axiosCall = true;
         break;
     }
     setValidationMessages(messages);
   };
   //Store index and their answers in object
-  const set = (i, val, score) => {
+  const storeObjectValue = (i, val, score) => {
     setObj((prevState) => ({ ...prevState, [i]: { val: val, score: score } }));
   };
   //Axios call on submit
   const handleSubmit = async (event) => {
     validateForm();
     event.preventDefault();
-    if (nav) {
+    if (axiosCall) {
       const name = event.target.name.value;
       const email = event.target.email.value;
       const mobile = event.target.contact.value;
@@ -76,34 +76,30 @@ export default function Accodion() {
                   riskMeter.push(true);
                   riskMeter.push(res.data.result.sum);
                   riskMeter.push(res.data.result.riskLabel);
-                  setValue(false);
+                  setOpenPopupForm(false);
                 }
               }
               );
         })
     }
   };
-  //reload page
-  const RenewRiskProfile = () => {
-    window.location.reload();
-  };
   return (
     <>
-      <section className={`outerContainer ${(value || riskMeter[0]) && "blurBackground"}`}>
+      <section className={`outerContainer ${(openPopupForm || riskMeter[0]) && "blurBackground"}`}>
         <h4 className="containerHeading">Please complete the risk profile questionnaire given below</h4>
         <MyAccodian
           data={records}
-          set={set}
+          storeObjectValue={storeObjectValue}
           currentPage={currentPage}
           obj={obj}
         />
-        <button className="btn" disabled={currentPage == 1} onClick={()=>{(currentPage != 1) && setCurrPage(currentPage - 1)}}>Prev</button>
-        <button disabled={risk && risk.length != (obj && Object.keys(obj).length)} className={currentPage == totalPage ? 'btn proceedBtnShow' : 'proceedBtnHide'} onClick={() => setValue(true)} >
+        <button className="btn" disabled={currentPage == 1} onClick={() => { (currentPage != 1) && setCurrPage(currentPage - 1) }}>Prev</button>
+        <button disabled={risk && risk.length != (obj && Object.keys(obj).length)} className={currentPage == totalPage ? 'btn proceedBtnShow' : 'proceedBtnHide'} onClick={() => setOpenPopupForm(true)} >
           Proceed
         </button>
-        <button className="btn nextBtn" disabled={currentPage == totalPage} onClick={()=>{(currentPage != totalPage) && setCurrPage(currentPage + 1)}}>Next</button>
+        <button className="btn nextBtn" disabled={currentPage == totalPage} onClick={() => { (currentPage != totalPage) && setCurrPage(currentPage + 1) }}>Next</button>
       </section>
-      {value && (
+      {openPopupForm && (
         <div className="popupForm">
           <form action="" onSubmit={(e) => handleSubmit(e)}>
             <div>
@@ -147,17 +143,14 @@ export default function Accodion() {
             <button className="formSubmitBtn" type="submit"> Submit</button> <br />
           </form>
           <div className="validationSummary">
-            {validationMessages.length > 0 && <span>Validation Summary </span>}
-            {validationMessages.length > 0 && validationMessages.map((vm) => (
-              <li key={vm}>{vm}</li>
-            ))}
+            {validationMessages  && <span>Validation Summary </span>}
+            {validationMessages && <li>{validationMessages}</li>}
           </div>
         </div>
       )} {
         riskMeter[0] && (
           <RiskGraph
             value={riskMeter}
-            RenewRiskProfile={RenewRiskProfile}
           />
         )}
     </>

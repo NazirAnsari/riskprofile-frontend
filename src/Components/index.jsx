@@ -1,175 +1,107 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { RiskData } from "./api";
 import MyAccodian from "./myAccodian";
-import "../Media/accodion.css";
-import Gauge from "./graph";
-
+import "../Media/scss/main.css";
+import RiskGraph from "./graph";
 export default function Accodion() {
-  
-  const [datavalue, setdata] = useState(new Set());
-  const [value, setvalue] = useState(false);
-  const [selected, setSelected] = useState(false);
-  const [obj, setobj] = useState({});
+  const [value, setValue] = useState(false);
+  const [obj, setObj] = useState({});
   const [validationMessages, setValidationMessages] = useState([]);
   const [formData, setFormData] = useState({});
-  // eslint-disable-next-line
-  const [count, setCount] = useState([]);
-  const [gaugeShow, setGaugeShow] = useState(false);
-  const [scoreVal, setScoreVal] = useState(new Set());
-  const [name, setName] = useState();
+  const [riskMeter, setRiskMeter] = useState([]);
   const [currentPage, setCurrPage] = useState(1);
-  let nav=false;
-
-//Calculate graph scores
-  const handleScore = (i,value) => {
-    if(count.length===i)
-    count.push(value);
-    else
-    count[i]=value;
-    addingScore();
-  };
-
-  const addingScore = () => {
-    let sum = 0;
-    for (let i = 0; i < count.length; i++) {
-      sum += count[i];
-    }
-
-    if (sum === 0 && sum <= 10) {
-      setScoreVal(sum);
-      setName("Conservative");
-    } else if (sum >= 11 && sum <= 20) {
-      setScoreVal(sum);
-      setName("Moderate Conservative");
-    } else if (sum >= 21 && sum <= 30) {
-      setScoreVal(sum);
-      setName("Moderate");
-    } else if (sum >= 31 && sum <= 40) {
-      setScoreVal(sum);
-      setName("Moderate Aggressive");
-    } else {
-      if (sum > 50) {
-        setScoreVal(50);
-        setName("Aggressive");
-        return;
-      }
-      setScoreVal(sum);
-      setName("Aggressive");
-    }
-  };
-
-
+  const [risk, setRisk] = useState();
+  var nav = false;
+  const recordPerPage = 2;
+  const lastIndex = currentPage * recordPerPage;
+  const firstIndex = lastIndex - recordPerPage;
+  const records = risk && risk.slice(firstIndex, lastIndex);
+  const totalPage = Math.ceil(risk && (Object.keys(risk).length / recordPerPage));
+  useEffect(() => {
+    axios
+      .get("/riskProfileQuestions",)
+      .then((res) => {
+        setRisk(res.data.result[0].questions);
+      });
+  }, []);
   //Getting Updated Values in Forms
   const handleChange = ({ target }) => {
     setFormData({ ...formData, [target.name]: target.value });
   };
-
-  //Frontend Validation 
-    const handleClick = (evt) => {
-    validateForm();
-    if (validationMessages.length < 0) {
-      evt.preventDefault();
-    }
-  };
-
+  //Forntend Validation
   const validateForm = () => {
     const { name, contact, email } = formData;
-
     setValidationMessages([]);
-    let messages = [];
-    let regmobile = /^[0-9]+$/;
-    if (name.length < 3) {
-      messages.push("Name is too short");
-    } else if (name.length > 30) {
-      messages.push("Name is too large");
-    } else if (contact.length !== 10 || !regmobile.test(contact)) {
-      messages.push("Give Valid Mobile Number");
-    } else if (
-      email.charAt(email.length - 4) !== "." &&
-      email.charAt(email.length - 4) !== "."
-    ) {
-      messages.push(". is not at correct position");
-    } else {
-      nav=true;
+    var messages = [];
+    var regmobile = /^[0-9]+$/;
+    switch (true) {
+      case name.length < 3:
+        messages.push("Name is too short");
+        break;
+      case name.length > 30:
+        messages.push("Name is too large");
+        break;
+      case contact.length !== 10 || !regmobile.test(contact):
+        messages.push("Give Valid Mobile Number");
+        break;
+      case email.charAt(email.length - 4) !== "." && email.charAt(email.length - 4) !== ".":
+        messages.push(". is not at correct position");
+        break;
+      default:
+        nav = true;
+        break;
     }
     setValidationMessages(messages);
   };
-
-//Store index and their answers in object
+  //Store index and their answers in object
   const set = (i, val, score) => {
-    if (!datavalue.has(i)) {
-      datavalue.add(i);
-      setdata(datavalue);
-    }
-    setobj((prevState) => ({ ...prevState, [i]: val, score }));
-
-    if (datavalue.size === RiskData.length) {
-      setSelected(true);
-    }
+    setObj((prevState) => ({ ...prevState, [i]: { val: val, score: score } }));
   };
-
   //Axios call on submit
   const handleSubmit = async (event) => {
+    validateForm();
     event.preventDefault();
-    handleClick();
     if (nav) {
-    const name = event.target.name.value;
-    const email = event.target.email.value;
-    const mobile = event.target.contact.value;
-    await axios
-      .post("/api", { obj, name, email, mobile })
-      .then((res) => {console.log("backend:",res.data) });
-    
-      setGaugeShow(true);
-      setvalue(false);
+      const name = event.target.name.value;
+      const email = event.target.email.value;
+      const mobile = event.target.contact.value;
+      await axios
+        .post("/insertProfileData", { obj, name, email, mobile })
+        .then((res) => {
+          !res.data.status &&
+            axios
+              .get("/getGraphData", { params: { obj: obj, name: name, email: email, mobile: mobile } })
+              .then((res) => {
+                if (res.data && res.data.result) {
+                  riskMeter.push(true);
+                  riskMeter.push(res.data.result.sum);
+                  riskMeter.push(res.data.result.riskLabel);
+                  setValue(false);
+                }
+              }
+              );
+        })
     }
   };
-
-
-//reload page
+  //reload page
   const RenewRiskProfile = () => {
-    setName("");
     window.location.reload();
   };
-
-
-  const recordPerPage = 2;
-  const lastIndex = currentPage * recordPerPage;
-  const firstIndex = lastIndex - recordPerPage;
-  const records = RiskData.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(RiskData.length / recordPerPage);
-
-//Get previous questions
-  function getPreviousQues() {
-    if (currentPage !== 1) {
-      setCurrPage(currentPage - 1);
-    }
-  }
-
-  //Get next questions
-  function getNextQues() {
-    if (currentPage !== npage) {
-      setCurrPage(currentPage + 1);
-    }
-  }
-
- 
   return (
     <>
-      <section className={`outerContainer ${(value || gaugeShow) && "blurBackground"}`}>
+      <section className={`outerContainer ${(value || riskMeter[0]) && "blurBackground"}`}>
         <h4 className="containerHeading">Please complete the risk profile questionnaire given below</h4>
-        <MyAccodian data={records} set={set} handleScore={handleScore} currentPage={currentPage} obj={obj} />
-        <button className="btn" disabled={currentPage === 1} onClick={getPreviousQues}>Prev</button>
-
-        <button
-          disabled={!selected}
-          className={currentPage === npage ? 'btn proceedBtnShow' : 'proceedBtnHide'}
-          onClick={() => setvalue(true)}
-        >
+        <MyAccodian
+          data={records}
+          set={set}
+          currentPage={currentPage}
+          obj={obj}
+        />
+        <button className="btn" disabled={currentPage == 1} onClick={()=>{(currentPage != 1) && setCurrPage(currentPage - 1)}}>Prev</button>
+        <button disabled={risk && risk.length != (obj && Object.keys(obj).length)} className={currentPage == totalPage ? 'btn proceedBtnShow' : 'proceedBtnHide'} onClick={() => setValue(true)} >
           Proceed
         </button>
-        <button className="btn nextBtn" disabled={currentPage === npage} onClick={getNextQues}>Next</button>
+        <button className="btn nextBtn" disabled={currentPage == totalPage} onClick={()=>{(currentPage != totalPage) && setCurrPage(currentPage + 1)}}>Next</button>
       </section>
       {value && (
         <div className="popupForm">
@@ -216,20 +148,18 @@ export default function Accodion() {
           </form>
           <div className="validationSummary">
             {validationMessages.length > 0 && <span>Validation Summary </span>}
-            {validationMessages.map((vm) => (
+            {validationMessages.length > 0 && validationMessages.map((vm) => (
               <li key={vm}>{vm}</li>
             ))}
           </div>
         </div>
-      )}
-
-      {gaugeShow && (
-        <Gauge
-          value={scoreVal}
-          RenewRiskProfile={RenewRiskProfile}
-          name={name}
-        />
-      )}
+      )} {
+        riskMeter[0] && (
+          <RiskGraph
+            value={riskMeter}
+            RenewRiskProfile={RenewRiskProfile}
+          />
+        )}
     </>
   );
 }

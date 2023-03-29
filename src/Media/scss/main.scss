@@ -1,0 +1,182 @@
+.outerContainer {
+  margin: 50px auto;
+  border: 1px solid rgb(202, 201, 201);
+  padding: 2px;
+  width: 95%;
+
+  .containerHeading {
+    padding-left: 10px;
+  }
+
+  .proceedBtnShow {
+    float: right;
+    padding: 5px;
+  }
+
+  .proceedBtnHide {
+    display: none;
+  }
+
+  .btn {
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: white;
+    border-radius: 5px;
+    border-color: white;
+  }
+
+  .nextBtn {
+    float: right;
+  }
+}
+
+.popupForm {
+  position: absolute;
+  top: 40vh;
+  height: auto;
+  width: 20%;
+  margin-left: 40%;
+  border: 1px solid rgb(203, 203, 203);
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  font-size: 0.8em;
+
+  .inputPopupForm {
+    font-size: 0.75em;
+    width: 100%;
+    height: 20px;
+    margin-bottom: 8px;
+    border: 1px solid rgb(203, 203, 203);
+    border-radius: 4px;
+  }
+
+  .validationSummary {
+    margin-top: 8px;
+    margin-left: 10px;
+    color: rgb(0, 0, 0);
+
+    li {
+      color: rgb(255, 0, 0);
+    }
+  }
+
+  .formSubmitBtn {
+    background-color: #00558a;
+    width: 102%;
+    margin-top: 15px;
+    color: white;
+    height: 30px;
+    font-size: 1em;
+  }
+}
+
+.innerContainer {
+  border: 2px solid rgb(205, 205, 205);
+  border-radius: 4px;
+  margin: 6px;
+  padding: 6px;
+
+  &:hover {
+    border: 2px solid #00b1d2;
+    box-shadow: 1px 0px 0px 3px #e8f9fb;
+  }
+
+  .questions {
+    font-size: 0.75em;
+    margin-top: 1.67em;
+    margin-bottom: 1.67em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+  }
+}
+
+.radioOptions {
+  font-size: 0.85em;
+
+  .radioValues {
+    margin-right: 5px;
+    position: relative;
+    top: 2px;
+    accent-color: blue;
+    display: inline;
+  }
+}
+
+.riskProfileGraphCenter {
+  position: absolute;
+  top: 20px;
+  left: 30vw;
+  margin: auto;
+  margin-left: auto;
+  margin-top: 10%;
+  border: 2px solid rgb(172, 172, 172);
+  background-color: white;
+
+  .graphHeading {
+    text-align: center;
+  }
+
+  .horizontalLine {
+    position: absolute;
+    width: 90%;
+    top: 67.6%;
+    left: 20px;
+    overflow: hidden;
+  }
+
+  .graphfooterText {
+    position: absolute;
+    text-align: center;
+    top: 75%;
+    left: 40%;
+  }
+
+  .riskProfileUpdateBtn {
+    background-color: #00dbab;
+    padding: 10px;
+    color: white;
+    font-size: 0.9rem;
+    border: 1px solid #4ae1bc;
+    border-radius: 4px;
+    padding-left: 30px;
+    padding-right: 30px;
+    position: absolute;
+    top: 88%;
+    left: 35%;
+  }
+}
+
+
+@media screen and (max-width: 672px) {
+  .riskProfileGraphCenter {
+    position: absolute;
+    top: 123px;
+    left: 1vw;
+    margin: auto;
+    margin-left: auto;
+    margin-top: 50%;
+    width: 100vw;
+    border: 2px solid rgb(172, 172, 172);
+    background-color: white;
+  }
+
+  .popupForm {
+    position: absolute;
+    top: 40vh;
+    height: auto;
+    width: 60%;
+    margin-left: 15%;
+    border: 1px solid rgb(203, 203, 203);
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    font-size: 0.8em;
+  }
+}
+
+.blurBackground {
+  opacity: 0.1;
+}

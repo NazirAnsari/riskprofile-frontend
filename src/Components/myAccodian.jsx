@@ -2,28 +2,29 @@ import React from "react";
 import Value from "./value";
 
 export default function MyAccodian(props) {
-
   return (
     <>
-      {props.data.map((curEle, i) => {
-        return <div className="innerContainer" key={i+2*props.currentPage-1}>
-         
-            <div className="questions" >
-              {curEle.serialNo}
-              {". "}
-              {curEle.question}{" "}
-            </div>
-
+      {props.data && props.data.map((currentElement, index) => {
+        return <div className="innerContainer" key={index + 2 * props.currentPage - 1}>
+          <div className="questions" >
+            {currentElement.serialNo}
+            {". "}
+            {currentElement.question}{" "}
+          </div>
           <div>
-              {curEle.choices.map((id) => {
+            {
+              currentElement.choices.map((id) => {
                 const { score } = id;
-
-                return <Value key={score} {...id} select={i+2*props.currentPage-1} set={props.set} handleScore={props.handleScore} obj={props.obj}
+                return <Value
+                  key={score}
+                  {...id}
+                  select={index + 2 * props.currentPage - 1}
+                  set={props.set}
+                  obj={props.obj}
                 />;
-              })}
-              </div>
-            
-          
+              })
+            }
+          </div>
         </div>
       })}
     </>

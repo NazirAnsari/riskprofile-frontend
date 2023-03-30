@@ -31,21 +31,21 @@ export default function Accodion() {
   //Forntend Validation
   const validateForm = () => {
     const { name, contact, email } = formData;
-    setValidationMessages();
     var messages;
-    var regmobile = /^[0-9]+$/;
+    const regmobile = /^[0-9]+$/;
+    const regemail = /^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+(?:com|co|in)$/;
     switch (true) {
       case name.length < 3:
-        messages="Name is too short";
+        messages = "Name is too short";
         break;
       case name.length > 30:
-        messages="Name is too large";
+        messages = "Name is too large";
+        break;
+      case !regemail.test(email):
+        messages = "Give a valid email";
         break;
       case contact.length != 10 || !regmobile.test(contact):
-        messages="Give Valid Mobile Number";
-        break;
-      case email.charAt(email.length - 4) != "." && email.charAt(email.length - 4) != ".":
-        messages=". is not at correct position";
+        messages = "Give Valid Mobile Number";
         break;
       default:
         axiosCall = true;
@@ -55,7 +55,7 @@ export default function Accodion() {
   };
   //Store index and their answers in object
   const storeObjectValue = (i, val, score) => {
-    setObj((prevState) => ({ ...prevState, [i]: { val: val, score: score } }));
+    setObj((prevState) => ({ ...prevState, [i]: { val, score } }));
   };
   //Axios call on submit
   const handleSubmit = async (event) => {
@@ -70,7 +70,7 @@ export default function Accodion() {
         .then((res) => {
           !res.data.status &&
             axios
-              .get("/getGraphData", { params: { obj: obj, name: name, email: email, mobile: mobile } })
+              .get("/getGraphData", { params: { obj, name, email, mobile } })
               .then((res) => {
                 if (res.data && res.data.result) {
                   riskMeter.push(true);
@@ -143,7 +143,7 @@ export default function Accodion() {
             <button className="formSubmitBtn" type="submit"> Submit</button> <br />
           </form>
           <div className="validationSummary">
-            {validationMessages  && <span>Validation Summary </span>}
+            {validationMessages && <span>Validation Summary </span>}
             {validationMessages && <li>{validationMessages}</li>}
           </div>
         </div>

@@ -18,9 +18,7 @@
   }
 
   .btn {
-    padding: 5px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 5px 20px;
     background-color: white;
     border-radius: 5px;
     border-color: white;
@@ -51,12 +49,9 @@
     border: 1px solid rgb(203, 203, 203);
     border-radius: 4px;
   }
-
   .validationSummary {
-    margin-top: 8px;
-    margin-left: 10px;
+    margin: 8px 0 0 10px;
     color: rgb(0, 0, 0);
-
     li {
       color: rgb(255, 0, 0);
     }
@@ -80,15 +75,12 @@
 
   &:hover {
     border: 2px solid #00b1d2;
-    box-shadow: 1px 0px 0px 3px #e8f9fb;
+    box-shadow: 1px 0 0 3px #e8f9fb;
   }
 
   .questions {
     font-size: 0.75em;
-    margin-top: 1.67em;
-    margin-bottom: 1.67em;
-    margin-left: 0;
-    margin-right: 0;
+    margin: 1.67em 0 1.67em 0;
     font-weight: bold;
   }
 }
@@ -96,7 +88,7 @@
 .radioOptions {
   font-size: 0.85em;
 
-  .radioValues {
+  .inputTypeRadio {
     margin-right: 5px;
     position: relative;
     top: 2px;
@@ -109,9 +101,7 @@
   position: absolute;
   top: 20px;
   left: 30vw;
-  margin: auto;
-  margin-left: auto;
-  margin-top: 10%;
+  margin-top: 7%;
   border: 2px solid rgb(172, 172, 172);
   background-color: white;
 
@@ -136,27 +126,22 @@
 
   .riskProfileUpdateBtn {
     background-color: #00dbab;
-    padding: 10px;
+    padding: 10px 30px;
     color: white;
     font-size: 0.9rem;
     border: 1px solid #4ae1bc;
     border-radius: 4px;
-    padding-left: 30px;
-    padding-right: 30px;
     position: absolute;
     top: 88%;
     left: 35%;
   }
 }
 
-
 @media screen and (max-width: 672px) {
   .riskProfileGraphCenter {
     position: absolute;
     top: 123px;
     left: 1vw;
-    margin: auto;
-    margin-left: auto;
     margin-top: 50%;
     width: 100vw;
     border: 2px solid rgb(172, 172, 172);

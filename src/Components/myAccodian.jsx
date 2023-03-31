@@ -1,5 +1,5 @@
-import React from "react";
-import Value from "./value";
+import React from "react"
+import Value from "./value"
 
 export default function MyAccodian(props) {
   return (
@@ -14,19 +14,19 @@ export default function MyAccodian(props) {
           <div>
             {
               currentElement.choices.map((id) => {
-                const { score } = id;
+                const { score } = id
                 return <Value
                   key={score}
                   {...id}
                   select={index + 2 * props.currentPage - 1}
                   storeObjectValue={props.storeObjectValue}
                   obj={props.obj}
-                />;
+                />
               })
             }
           </div>
         </div>
       })}
     </>
-  );
+  )
 }

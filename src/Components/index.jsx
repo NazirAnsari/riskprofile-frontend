@@ -1,71 +1,71 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import MyAccodian from "./myAccodian";
-import "../Media/scss/main.css";
-import RiskGraph from "./graph";
+import React, { useEffect, useState } from "react"
+import axios from "axios"
+import MyAccodian from "./myAccodian"
+import "../Media/scss/main.css"
+import RiskGraph from "./graph"
 export default function Accodion() {
-  const [openPopupForm, setOpenPopupForm] = useState(false);
-  const [obj, setObj] = useState({});
-  const [validationMessages, setValidationMessages] = useState();
-  const [formData, setFormData] = useState({});
-  const [riskMeter, setRiskMeter] = useState([]);
-  const [currentPage, setCurrPage] = useState(1);
-  const [risk, setRisk] = useState();
-  var axiosCall = false;
-  const recordPerPage = 2;
-  const lastIndex = currentPage * recordPerPage;
-  const firstIndex = lastIndex - recordPerPage;
-  const records = risk && risk.slice(firstIndex, lastIndex);
-  const totalPage = Math.ceil(risk && (Object.keys(risk).length / recordPerPage));
+  const [openPopupForm, setOpenPopupForm] = useState(false)
+  const [obj, setObj] = useState({})
+  const [validationMessages, setValidationMessages] = useState()
+  const [formData, setFormData] = useState({})
+  const [riskMeter, setRiskMeter] = useState({ status: -1 })
+  const [currentPage, setCurrPage] = useState(1)
+  const [risk, setRisk] = useState()
+  let axiosCall = false
+  const recordPerPage = 2
+  const lastIndex = currentPage * recordPerPage
+  const firstIndex = lastIndex - recordPerPage
+  const records = risk && risk.slice(firstIndex, lastIndex)
+  const totalPage = Math.ceil(risk && (Object.keys(risk).length / recordPerPage))
   useEffect(() => {
     axios
       .get("/riskProfileQuestions",)
       .then((res) => {
-        setRisk(res.data.result[0].questions);
-      });
-  }, []);
+        setRisk(res.data.result[0].questions)
+      })
+  }, [])
   //Getting Updated Values in Forms
   const handleChange = ({ target }) => {
-    setFormData({ ...formData, [target.name]: target.value });
-  };
+    setFormData({ ...formData, [target.name]: target.value })
+  }
   //Forntend Validation
   const validateForm = () => {
-    const { name, contact, email } = formData;
-    var messages;
-    const regmobile = /^[0-9]+$/;
-    const regemail = /^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+(?:com|co|in)$/;
+    const { name, contact, email } = formData
+    let messages
+    const regmobile = /^[0-9]+$/
+    const regemail = /^[a-zA-Z0-9._%+-]+@(?:[a-zA-Z0-9-]+\.)+(?:com|co|in)$/
     switch (true) {
       case name.length < 3:
-        messages = "Name is too short";
-        break;
+        messages = "Name is too short"
+        break
       case name.length > 30:
-        messages = "Name is too large";
-        break;
+        messages = "Name is too large"
+        break
       case !regemail.test(email):
-        messages = "Give a valid email";
-        break;
+        messages = "Give a valid email"
+        break
       case contact.length != 10 || !regmobile.test(contact):
-        messages = "Give Valid Mobile Number";
-        break;
+        messages = "Give Valid Mobile Number"
+        break
       default:
-        axiosCall = true;
-        break;
+        axiosCall = true
+        break
     }
-    setValidationMessages(messages);
-  };
+    setValidationMessages(messages)
+  }
   //Store index and their answers in object
   const storeObjectValue = (i, val, score) => {
-    setObj((prevState) => ({ ...prevState, [i]: { val, score } }));
-  };
+    setObj((prevState) => ({ ...prevState, [i]: { val, score } }))
+  }
   //Axios call on submit
-  const handleSubmit = async (event) => {
-    validateForm();
-    event.preventDefault();
+  const handleSubmit = (event) => {
+    validateForm()
+    event.preventDefault()
     if (axiosCall) {
-      const name = event.target.name.value;
-      const email = event.target.email.value;
-      const mobile = event.target.contact.value;
-      await axios
+      const name = event.target.name.value
+      const email = event.target.email.value
+      const mobile = event.target.contact.value
+      axios
         .post("/insertProfileData", { obj, name, email, mobile })
         .then((res) => {
           !res.data.status &&
@@ -73,19 +73,17 @@ export default function Accodion() {
               .get("/getGraphData", { params: { obj, name, email, mobile } })
               .then((res) => {
                 if (res.data && res.data.result) {
-                  riskMeter.push(true);
-                  riskMeter.push(res.data.result.sum);
-                  riskMeter.push(res.data.result.riskLabel);
-                  setOpenPopupForm(false);
+                  setRiskMeter(res.data)
+                  setOpenPopupForm(false)
                 }
               }
-              );
+              )
         })
     }
-  };
+  }
   return (
     <>
-      <section className={`outerContainer ${(openPopupForm || riskMeter[0]) && "blurBackground"}`}>
+      <section className={`outerContainer ${(openPopupForm || !riskMeter.status) && "blurBackground"}`}>
         <h4 className="containerHeading">Please complete the risk profile questionnaire given below</h4>
         <MyAccodian
           data={records}
@@ -148,11 +146,11 @@ export default function Accodion() {
           </div>
         </div>
       )} {
-        riskMeter[0] && (
+        !riskMeter.status && (
           <RiskGraph
             value={riskMeter}
           />
         )}
     </>
-  );
+  )
 }

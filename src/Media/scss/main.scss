@@ -50,7 +50,7 @@
     border-radius: 4px;
   }
   .validationSummary {
-    margin: 8px 0 0 10px;
+    margin: 8px 0px 0px 10px;
     color: rgb(0, 0, 0);
     li {
       color: rgb(255, 0, 0);
@@ -75,7 +75,7 @@
 
   &:hover {
     border: 2px solid #00b1d2;
-    box-shadow: 1px 0 0 3px #e8f9fb;
+    box-shadow: 1px 0px 0px 3px #e8f9fb;
   }
 
   .questions {
@@ -88,7 +88,7 @@
 .radioOptions {
   font-size: 0.85em;
 
-  .inputTypeRadio {
+  .radioValues {
     margin-right: 5px;
     position: relative;
     top: 2px;
@@ -137,15 +137,16 @@
   }
 }
 
+
 @media screen and (max-width: 672px) {
   .riskProfileGraphCenter {
-    position: absolute;
-    top: 123px;
-    left: 1vw;
-    margin-top: 50%;
-    width: 100vw;
-    border: 2px solid rgb(172, 172, 172);
-    background-color: white;
+  position: absolute;
+  top: 123px;
+  left: 1vw;
+  margin-top: 50%;
+  width: 100vw;
+  border: 2px solid rgb(172, 172, 172);
+  background-color: white;
   }
 
   .popupForm {
@@ -159,9 +160,9 @@
     background-color: white;
     border-radius: 8px;
     font-size: 0.8em;
-  }
+}
 }
 
-.blurBackground {
+.blurBackground{
   opacity: 0.1;
 }

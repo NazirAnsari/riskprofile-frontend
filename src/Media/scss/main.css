@@ -45,7 +45,7 @@
   border-radius: 4px;
 }
 .popupForm .validationSummary {
-  margin: 8px 0 0 10px;
+  margin: 8px 0px 0px 10px;
   color: rgb(0, 0, 0);
 }
 .popupForm .validationSummary li {
@@ -68,7 +68,7 @@
 }
 .innerContainer:hover {
   border: 2px solid #00b1d2;
-  box-shadow: 1px 0 0 3px #e8f9fb;
+  box-shadow: 1px 0px 0px 3px #e8f9fb;
 }
 .innerContainer .questions {
   font-size: 0.75em;
@@ -79,7 +79,7 @@
 .radioOptions {
   font-size: 0.85em;
 }
-.radioOptions .inputTypeRadio {
+.radioOptions .radioValues {
   margin-right: 5px;
   position: relative;
   top: 2px;

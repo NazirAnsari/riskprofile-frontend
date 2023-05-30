@@ -19,7 +19,7 @@ export default function Accodion() {
   const totalPage = Math.ceil(risk && (Object.keys(risk).length / recordPerPage))
   useEffect(() => {
     axios
-      .get("/riskProfileQuestions",)
+      .get("/getRiskProfileQuestions",)
       .then((res) => {
         setRisk(res.data.result[0].questions)
       })

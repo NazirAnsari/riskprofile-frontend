@@ -21,7 +21,7 @@ const needle = (value, data, horizontalAxis, verticalAxis, innerRadius, outerRad
   const length = (innerRadius + 2 * outerRadius) / 4
   const sin = Math.sin(-RADIAN * angle)
   const cos = Math.cos(-RADIAN * angle)
- 
+
   const xba = horizontalAxis + 5 + 5 * sin
   const xbb = horizontalAxis + 5 - 5 * sin
   const xp = horizontalAxis + 5 + length * cos

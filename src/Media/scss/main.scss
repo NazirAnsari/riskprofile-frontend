@@ -1,6 +1,5 @@
 .outerContainer {
   margin: 50px auto;
-  border: 1px solid rgb(202, 201, 201);
   padding: 2px;
   width: 95%;
 
@@ -20,8 +19,15 @@
   .btn {
     padding: 5px 20px;
     background-color: white;
-    border-radius: 5px;
+    border-radius: 15px;
     border-color: white;
+    border: 2px solid black;
+    margin-top: 5px;
+
+    &:hover {
+      background-color: rgb(245, 245, 245);
+      color: darkblue;
+    }
   }
 
   .nextBtn {
@@ -40,7 +46,7 @@
   background-color: white;
   border-radius: 8px;
   font-size: 0.8em;
-
+  box-shadow: 0 0 5px 2px #de800f;
   .inputPopupForm {
     font-size: 0.75em;
     width: 100%;
@@ -58,12 +64,17 @@
   }
 
   .formSubmitBtn {
-    background-color: #00558a;
+    background-color: #c8740d;
+    // background-color: #00558a;
     width: 102%;
     margin-top: 15px;
     color: white;
     height: 30px;
     font-size: 1em;
+    &:hover {
+      background-color: #d84e13;
+      // background-color: #067bc4;
+    }
   }
 }
 
@@ -90,6 +101,7 @@
 
   .radioValues {
     margin-right: 5px;
+    margin-bottom: 5px;
     position: relative;
     top: 2px;
     accent-color: blue;
@@ -104,6 +116,8 @@
   margin-top: 7%;
   border: 2px solid rgb(172, 172, 172);
   background-color: white;
+  border-radius: 27px;
+  box-shadow: 0 0 5px 2px darkorange;
 
   .graphHeading {
     text-align: center;
@@ -125,7 +139,7 @@
   }
 
   .riskProfileUpdateBtn {
-    background-color: #00dbab;
+    background-color: #c89f0d;
     padding: 10px 30px;
     color: white;
     font-size: 0.9rem;
@@ -134,19 +148,23 @@
     position: absolute;
     top: 88%;
     left: 35%;
+    border-radius: 14px;
+    
+    &:hover{
+      background-color: #db7300;
+    }
   }
 }
 
-
 @media screen and (max-width: 672px) {
   .riskProfileGraphCenter {
-  position: absolute;
-  top: 123px;
-  left: 1vw;
-  margin-top: 50%;
-  width: 100vw;
-  border: 2px solid rgb(172, 172, 172);
-  background-color: white;
+    position: absolute;
+    top: 123px;
+    left: 1vw;
+    margin-top: 50%;
+    width: 100vw;
+    border: 2px solid rgb(172, 172, 172);
+    background-color: white;
   }
 
   .popupForm {
@@ -160,9 +178,24 @@
     background-color: white;
     border-radius: 8px;
     font-size: 0.8em;
-}
+  }
 }
 
-.blurBackground{
+@media only screen and (max-width: 820px) and (min-width: 672px) {
+  .popupForm {
+    position: absolute;
+    top: 40vh;
+    height: auto;
+    width: 45%;
+    margin-left: 20%;
+    border: 1px solid rgb(203, 203, 203);
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    font-size: 0.8em;
+  }
+}
+
+.blurBackground {
   opacity: 0.1;
 }

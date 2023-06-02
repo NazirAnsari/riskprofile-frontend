@@ -25,6 +25,18 @@
   background-color: rgb(245, 245, 245);
   color: darkblue;
 }
+.outerContainer .btn :disabled {
+  background-color: white;
+}
+.outerContainer .btn:disabled {
+  background-color: white;
+  color: rgba(160, 160, 160, 0.868);
+  border: 1px solid black;
+}
+.outerContainer .btn:disabled:hover {
+  background-color: hsl(0, 0%, 98%);
+  color: rgb(157, 157, 157);
+}
 .outerContainer .nextBtn {
   float: right;
 }
@@ -178,4 +190,8 @@
 }
 .blurBackground {
   opacity: 0.1;
+}
+
+.blurRiskGraphBackgroundGraph {
+  opacity: 0;
 }/*# sourceMappingURL=main.css.map */

@@ -83,7 +83,7 @@ export default function Accodion() {
   }
   return (
     <>
-      <section className={`outerContainer ${(openPopupForm || !riskMeter.status) && "blurBackground"}`}>
+      <section className={`outerContainer ${(openPopupForm) && "blurBackground"} ${!riskMeter.status && "blurRiskGraphBackgroundGraph"}`}>
         <h4 className="containerHeading">Please complete the risk profile questionnaire given below</h4>
         <MyAccodian
           data={records}
@@ -146,7 +146,7 @@ export default function Accodion() {
           </div>
         </div>
       )} {
-        !riskMeter.status && (
+        !riskMeter.status &&  (
           <RiskGraph
             value={riskMeter}
           />

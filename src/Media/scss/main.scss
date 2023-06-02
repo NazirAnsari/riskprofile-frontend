@@ -28,6 +28,20 @@
       background-color: rgb(245, 245, 245);
       color: darkblue;
     }
+
+    :disabled {
+      background-color: white;
+    }
+  }
+
+  .btn:disabled {
+    background-color:white;
+    color:rgba(160, 160, 160, 0.868);
+    border:1px solid black;
+    &:hover{
+      background-color:hsl(0, 0%, 98%);
+      color:rgb(157, 157, 157)
+    }
   }
 
   .nextBtn {
@@ -149,8 +163,8 @@
     top: 88%;
     left: 35%;
     border-radius: 14px;
-    
-    &:hover{
+
+    &:hover {
       background-color: #db7300;
     }
   }
@@ -198,4 +212,8 @@
 
 .blurBackground {
   opacity: 0.1;
+}
+
+.blurRiskGraphBackgroundGraph{
+  opacity: 0;
 }
